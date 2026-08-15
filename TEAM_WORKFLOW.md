@@ -4,20 +4,37 @@ Welcome to the **TESOR_GP** project repository! This guide defines the workflow 
 
 ---
 
-## 1. Team Ownership Matrix
+## 1. Repository Access & Setup
 
-Each member has primary responsibility over specific modules in the monorepo:
+Before starting, the repository owner must invite all team members, and members must accept the invitation:
 
-| Member | Domain & Directories | Assigned Branch | Primary Responsibilities |
-|---|---|---|---|
-| **Member 1** | `apps/web` | `feature/frontend` | Streaming UI, React components, Video player, Wallet integration, Dashboards |
-| **Member 2** | `apps/api`, `packages/database` | `feature/backend-api` | Express API Gateway, Watch-Time heartbeat validation, Auth, PostgreSQL/Prisma schemas |
-| **Member 3** | `contracts/`, `packages/blockchain` | `feature/blockchain` | Polygon Amoy Smart Contracts (StreamCoin, Payment Router), Blockchain Adapter SDK |
-| **Member 4** | `workers/`, `ai/` | `feature/media-ai` | FFmpeg video transcoding to HLS, AI Recommendation Service & Fallbacks |
+### Owner Instructions (Add Collaborators)
+1. Go to the repo page: `https://github.com/Achira621/Tesor_gp`
+2. Click **Settings** (top navigation bar) -> **Collaborators** (left sidebar).
+3. Click **Add people** and enter the team member's GitHub username.
+4. Send the invitation.
+
+### Member Instructions (Accept Invitation)
+1. Check your email for the GitHub invitation or visit: `https://github.com/Achira621/Tesor_gp/invitations`
+2. Accept the invitation to gain push permissions to the repository.
 
 ---
 
-## 2. Branch Hierarchy
+## 2. Team Ownership Matrix
+
+Each member has primary responsibility over specific modules in the monorepo. Replace the `@username` placeholders with your actual GitHub accounts:
+
+| Role / Owner | Domain & Directories | Assigned Branch | Primary Responsibilities |
+|---|---|---|---|
+| **Member 1** (`@username`) | `apps/web` | `feature/frontend` | Streaming UI, React components, Video player, Wallet integration, Dashboards |
+| **Member 2** (`@username`) | `apps/api`, `packages/database` | `feature/backend-api` | Express API Gateway, Watch-Time heartbeat validation, Auth, PostgreSQL/Prisma schemas |
+| **Member 3** (`@username`) | `contracts/`, `packages/blockchain` | `feature/blockchain` | Polygon Amoy Smart Contracts (StreamCoin, Payment Router), Blockchain Adapter SDK |
+| **Member 4** (`@username`) | `workers/`, `ai/` | `feature/media-ai` | FFmpeg video transcoding to HLS, AI Recommendation Service & Fallbacks |
+
+---
+
+## 3. Branch Hierarchy
+
 
 ```text
 main           ───────► Stable Production Branch (Protected)
