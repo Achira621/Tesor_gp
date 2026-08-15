@@ -70,7 +70,56 @@ develop        ───────► Integration Testing Branch
      git checkout feature/media-ai
      ```
 
+
 ---
+
+### Local Project Setup & Installation
+
+After checking out your feature branch, follow these steps to set up your local development environment:
+
+#### 1. Install Prerequisites
+Ensure you have the following installed on your machine:
+- **Node.js** (v18 or higher)
+- **PostgreSQL** (running locally or a remote connection string)
+- **Redis** (running locally on default port 6379, or config URI)
+- **FFmpeg** (installed and added to your system PATH)
+
+#### 2. Install Project Dependencies
+Run the following command at the root directory of the repository to install all packages and link the monorepo workspaces:
+```bash
+npm install
+```
+
+#### 3. Set Up Environment Variables
+1. Duplicate the `.env.example` file in the root directory:
+   ```bash
+   copy .env.example .env
+   ```
+2. Open the new `.env` file and configure your PostgreSQL database connection (`DATABASE_URL`) and other local settings.
+
+#### 4. Initialize Database Schemas
+Generate the Prisma Client and apply database tables to your PostgreSQL database:
+```bash
+npm run prisma:generate --workspace=@tesor_gp/database
+npm run prisma:migrate --workspace=@tesor_gp/database
+```
+
+#### 5. Build Shared Libraries
+Build the core shared packages (`@tesor_gp/shared`, `@tesor_gp/blockchain`, `@tesor_gp/database`) so your applications can consume them:
+```bash
+npm run build:packages
+```
+
+#### 6. Start the Local Servers
+To run the Web application and backend APIs simultaneously in development mode, run:
+```bash
+npm run dev
+```
+- **Web Interface:** Access at [http://localhost:3000](http://localhost:3000)
+- **API Server:** Health endpoint at [http://localhost:4000/health](http://localhost:4000/health)
+
+---
+
 
 ### Daily Development & Pushing Work
 
