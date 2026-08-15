@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    { "path": "./packages/shared" },
+    { "path": "./packages/database" },
+    { "path": "./packages/blockchain" },
+    { "path": "./apps/api" },
+    { "path": "./apps/web" },
+    { "path": "./workers/video-processor" },
+    { "path": "./ai" }
+  ]
+}

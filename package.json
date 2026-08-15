@@ -1,0 +1,28 @@
+{
+  "name": "tesor_gp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web3 Pay-As-You-Watch Streaming Ecosystem on Polygon",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "workers/*",
+    "contracts",
+    "ai"
+  ],
+  "scripts": {
+    "build:packages": "npm run build --workspace=@tesor_gp/shared --workspace=@tesor_gp/blockchain --workspace=@tesor_gp/database",
+    "build": "npm run build:packages && npm run build --workspaces --if-present",
+    "dev": "npm run dev --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

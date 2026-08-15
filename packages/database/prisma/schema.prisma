@@ -1,0 +1,140 @@
+// Prisma Database Schema for TESOR_GP (StreamVerse)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  CREATOR
+  ADMIN
+}
+
+enum ProcessingStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum SessionStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  SETTLED
+}
+
+enum SettlementStatus {
+  PENDING
+  SETTLED
+  FAILED
+}
+
+model User {
+  id             String         @id @default(uuid())
+  email          String         @unique
+  passwordHash   String
+  username       String         @unique
+  walletAddress  String?        @unique
+  role           Role           @default(USER)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  creatorProfile CreatorProfile?
+  watchSessions  WatchSession[]
+  settlements    PaymentSettlement[]
+  rewards        TokenReward[]
+}
+
+model CreatorProfile {
+  id             String         @id @default(uuid())
+  userId         String         @unique
+  channelName    String
+  bio            String?
+  totalEarnings  Float          @default(0.0)
+  createdAt      DateTime       @default(now())
+
+  user           User           @relation(fields: [userId], references: [id])
+  videos         Video[]
+}
+
+model Video {
+  id                 String           @id @default(uuid())
+  title              String
+  description        String
+  creatorId          String
+  originalFilePath   String
+  hlsManifestPath    String?
+  thumbnailPath      String?
+  durationSeconds    Int              @default(0)
+  ratePerMinuteSTRM  Float            @default(0.33)
+  category           String           @default("General")
+  processingStatus   ProcessingStatus @default(PENDING)
+  isPublished        Boolean          @default(false)
+  viewsCount         Int              @default(0)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  creator            CreatorProfile   @relation(fields: [creatorId], references: [id])
+  watchSessions      WatchSession[]
+}
+
+model WatchSession {
+  id                      String        @id @default(uuid())
+  userId                  String
+  videoId                 String
+  playbackToken           String        @unique
+  verifiedDurationSeconds Int           @default(0)
+  status                  SessionStatus @default(ACTIVE)
+  startedAt               DateTime      @default(now())
+  lastHeartbeatAt         DateTime      @default(now())
+
+  user                    User          @relation(fields: [userId], references: [id])
+  video                   Video         @relation(fields: [videoId], references: [id])
+  heartbeats              WatchHeartbeat[]
+  settlements             PaymentSettlement[]
+}
+
+model WatchHeartbeat {
+  id            String       @id @default(uuid())
+  sessionId     String
+  sequence      Int
+  playbackTime  Float
+  createdAt     DateTime     @default(now())
+
+  session       WatchSession @relation(fields: [sessionId], references: [id])
+}
+
+model PaymentSettlement {
+  id                  String           @id @default(uuid())
+  sessionId           String
+  userId              String
+  creatorId           String
+  videoId             String
+  watchedSeconds      Int
+  amountSTRM          Float
+  platformFeeSTRM     Float
+  creatorEarningsSTRM Float
+  txHash              String?
+  status              SettlementStatus @default(PENDING)
+  createdAt           DateTime         @default(now())
+
+  user                User             @relation(fields: [userId], references: [id])
+  session             WatchSession     @relation(fields: [sessionId], references: [id])
+}
+
+model TokenReward {
+  id          String   @id @default(uuid())
+  userId      String
+  reason      String
+  amountSTRM  Float
+  txHash      String?
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+}
